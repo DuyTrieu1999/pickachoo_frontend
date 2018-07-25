@@ -1,3 +1,4 @@
-git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/qtmx.git
-
-git push -f -q heroku master
+deploy:
+  script:
+  - git remote add heroku https://heroku:$HEROKU_API_KEY@git.heroku.com/qtmx.git
+  - git push -f -q heroku master
