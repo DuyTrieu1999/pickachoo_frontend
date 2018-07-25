@@ -81,13 +81,7 @@ shadowJar {
   }
 }
 
-eclipse {
-  classpath {
-    file.beforeMerged { cp ->
-      cp.entries.add(new SourceFolder('build/classes/java/main', null))
-    }
-  }
-}
+task stage(dependsOn: ['shadowJar'])
 
 kotlin {
   experimental {
