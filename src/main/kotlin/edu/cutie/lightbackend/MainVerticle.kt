@@ -89,7 +89,7 @@ class MainVerticle : CoroutineVerticle() {
 
     route().handler(BodyHandler.create())
     route().handler(StaticHandler.create())
-    route().handler(CorsHandler.create("http://localhost:8081").allowCredentials(true))
+    route().handler(CorsHandler.create("http://localhost:8080|https://qtmx.netlify.com").allowCredentials(true))
     createPublicEndpoints()
     // route().handler(JWTAuthHandler.create(provider, EnvConfig.PUBLIC_PATH))
     createEndpoints()
