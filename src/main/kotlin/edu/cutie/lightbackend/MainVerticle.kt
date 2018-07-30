@@ -4,13 +4,15 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.module.kotlin.KotlinModule
 import com.google.common.flogger.FluentLogger
 import edu.cutie.lightbackend.controller.AuthController
-import edu.cutie.lightbackend.controller.MentorController
-import edu.cutie.lightbackend.domain.Models
+import edu.cutie.lightbackend.controller.ProductController
+import edu.cutie.lightbackend.controller.ReviewController
+import edu.cutie.lightbackend.domain.*
 import io.requery.Persistable
 import io.requery.sql.KotlinConfiguration
 import io.requery.sql.KotlinEntityDataStore
 import io.requery.sql.SchemaModifier
 import io.requery.sql.TableCreationMode
+import io.vertx.core.Vertx
 import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.jdbc.spi.impl.HikariCPDataSourceProvider
@@ -46,8 +48,19 @@ class MainVerticle : CoroutineVerticle() {
     val port = System.getenv("PORT")?.toInt() ?: 8080
     val router = createRouter()
 
-    MentorController(router)
     AuthController(router)
+    ProductController(router)
+    ReviewController(router)
+
+    data.withTransaction {
+      insert(ReviewEntity().apply {
+        this.fromUser = insert(PersonEntity().apply { this.username = "Lol" }).id
+        this.toProduct = insert(ProductEntity().apply {
+          departmentId = insert(DepartmentEntity().apply { this.name = "Math" }).id
+          name = "Quang"
+        }).id
+      })
+    }
 
     Json.mapper.registerModule(KotlinModule())
     Json.mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
@@ -73,4 +86,8 @@ class MainVerticle : CoroutineVerticle() {
     createPublicEndpoints()
     createEndpoints()
   }
+}
+
+fun main(args: Array<String>) {
+  Vertx.vertx().deployVerticle(MainVerticle())
 }

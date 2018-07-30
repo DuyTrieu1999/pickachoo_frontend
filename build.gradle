@@ -58,7 +58,7 @@ dependencies {
 
   compile 'com.google.flogger:flogger:0.2'
   compile 'com.cloudinary:cloudinary-http44:1.19.0'
-  runtimeOnly 'com.google.flogger:flogger-system-backend:0.2'
+  compile 'com.google.flogger:flogger-system-backend:0.2'
 }
 
 vertx {
