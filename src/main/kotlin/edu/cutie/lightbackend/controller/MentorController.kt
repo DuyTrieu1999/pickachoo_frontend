@@ -9,7 +9,7 @@ import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 
-class ProductController(router: Router): Controller(router, "/product"), WithLogger {
+class MentorController(router: Router): Controller(router, "/product"), WithLogger {
   override fun create(context: RoutingContext) { // TODO: add support for ReCaptcha
     logger.atInfo().log(context.bodyAsString)
     val p = context.bodyAsJson.mapTo(ProductEntity::class.java)
