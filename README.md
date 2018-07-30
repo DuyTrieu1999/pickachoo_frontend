@@ -14,7 +14,7 @@ Similarly to [gitflow](https://www.atlassian.com/git/tutorials/comparing-workflo
 * `master` = `develop` branch
 * something stable enough will be merged in `release` branch
 * some new major features -> open issues, discuss (we have a Kanban board for this)
-  * If OK and you think *X* should do this now, drag the issue to `Todo` tab, assign X (X is likely to be yourself)
+  * If OK and you think *X* should do this now, drag the issue to `Doing` tab, assign X (X is likely to be yourself)
   * Else put an `on-hold` tag
 * some **minor** changes: pushing them directly to master is fine.
 
