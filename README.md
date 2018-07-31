@@ -11,12 +11,11 @@
 
 ### Workflow
 Similarly to [gitflow](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow):
-* `master` = `develop` branch
 * something stable enough will be merged in `release` branch
 * some new major features -> open issues, discuss (we have a Kanban board for this)
   * If OK and you think *X* should do this now, drag the issue to `Doing` tab, assign X (X is likely to be yourself)
   * Else put an `on-hold` tag
-* some **minor** changes: pushing them directly to master is fine.
+* some **minor** changes that will not break build pipeline: pushing them directly to master is fine.
 
 Note: auto-deploy will be triggered when `master` branch changes
 

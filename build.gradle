@@ -46,6 +46,7 @@ dependencies {
 
   compile('joda-time:joda-time:2.10')
 
+  compile('org.slf4j:slf4j-jdk14:1.7.21')
 
   compile('io.requery:requery:1.5.1')
   compile('io.requery:requery-kotlin:1.5.1')
@@ -58,7 +59,7 @@ dependencies {
 
   compile 'com.google.flogger:flogger:0.2'
   compile 'com.cloudinary:cloudinary-http44:1.19.0'
-  compile 'com.google.flogger:flogger-system-backend:0.2'
+  runtime 'com.google.flogger:flogger-system-backend:0.2'
 }
 
 vertx {
