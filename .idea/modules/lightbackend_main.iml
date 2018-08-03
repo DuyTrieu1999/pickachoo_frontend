@@ -62,6 +62,7 @@
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.60" level="project" />
     <orderEntry type="library" name="Gradle: io.vertx:vertx-jdbc-client:3.5.3" level="project" />
     <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt:0.9.1" level="project" />
+    <orderEntry type="library" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5" level="project" />
     <orderEntry type="library" name="Gradle: joda-time:joda-time:2.10" level="project" />
     <orderEntry type="library" name="Gradle: io.requery:requery-kotlin:1.5.1" level="project" />
     <orderEntry type="library" name="Gradle: io.requery:requery:1.5.1" level="project" />

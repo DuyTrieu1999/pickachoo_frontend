@@ -53,7 +53,8 @@ dependencies {
   compile('com.zaxxer:HikariCP:3.1.0')
   compile 'org.hsqldb:hsqldb:2.4.1'
 
-  compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
+  compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6"
+  compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5"
 
 
   // compile 'com.cloudinary:cloudinary-http44:1.19.0'

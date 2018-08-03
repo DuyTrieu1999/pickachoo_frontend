@@ -8,8 +8,8 @@ abstract class Controller(router: Router, endpoint: String, val ITEM_PER_PAGE: I
   init {
     router.post("$endpoint/create").coroutineHandler { create(it) }
     router.put("$endpoint/update").coroutineHandler { update(it) }
-    router.get("$endpoint/view/:id").coroutineHandler { getOne(it) }
-    router.get("$endpoint/:id").coroutineHandler { listAll(it, it.pathParam("id").toIntOrNull() ?: 0) }
+    router.get("$endpoint/:id").coroutineHandler { getOne(it) }
+    router.get("$endpoint/page/:id").coroutineHandler { listAll(it, it.pathParam("id").toIntOrNull() ?: 0) }
     router.get("$endpoint/").coroutineHandler { listAll(it, 0) }
     router.delete("$endpoint/:id").coroutineHandler { delete(it) }
   }
