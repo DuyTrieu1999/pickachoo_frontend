@@ -6,7 +6,7 @@ buildscript {
   }
 
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.51'
+    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.60'
     classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
     classpath "gradle.plugin.io.vertx:vertx-gradle-plugin:0.1.0"
   }
@@ -33,7 +33,7 @@ dependencies {
   // TODO use compileOnly instead compile for codegen
   compile "io.vertx:vertx-core"
   compile "io.vertx:vertx-web"
-  compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.51'
+  compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.60'
   compile ("io.vertx:vertx-lang-kotlin") {
     exclude group: 'org.jetbrains.kotlin'
   }
@@ -46,8 +46,6 @@ dependencies {
 
   compile('joda-time:joda-time:2.10')
 
-  compile('org.slf4j:slf4j-jdk14:1.7.21')
-
   compile('io.requery:requery:1.5.1')
   compile('io.requery:requery-kotlin:1.5.1')
   kapt 'io.requery:requery-processor:1.5.1'
@@ -57,9 +55,11 @@ dependencies {
 
   compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.+"
 
+
+  // compile 'com.cloudinary:cloudinary-http44:1.19.0'
   compile 'com.google.flogger:flogger:0.2'
-  compile 'com.cloudinary:cloudinary-http44:1.19.0'
-  runtime 'com.google.flogger:flogger-system-backend:0.2'
+  runtimeOnly 'com.google.flogger:flogger-system-backend:0.2'
+  compile 'org.slf4j:slf4j-jdk14:1.7.25'
 }
 
 vertx {

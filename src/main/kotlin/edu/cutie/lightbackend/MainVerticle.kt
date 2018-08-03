@@ -33,8 +33,8 @@ val data: KotlinEntityDataStore<Persistable> by lazy {
   KotlinEntityDataStore<Persistable>(KotlinConfiguration(Models.DEFAULT, source, useDefaultLogging = true))
 }
 
+private val logger = FluentLogger.forEnclosingClass()
 class MainVerticle : CoroutineVerticle() {
-  private val logger = FluentLogger.forEnclosingClass()
 
   override suspend fun start() {
     val port = System.getenv("PORT")?.toInt() ?: 8080
