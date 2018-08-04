@@ -23,7 +23,7 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
     }
     val p = data.withTransaction {
       insert(review)
-      val p = select(Product::class).where(Product::id eq review.toProduct).get().first().apply {
+      val p = select(ProductEntity::class).where(ProductEntity.ID eq review.toProduct).get().first().apply {
         difficulty = 1.0 * reviews / (reviews + 1) * difficulty + review.difficultyScore / (reviews + 1)
         score = 1.0 * reviews / (reviews + 1) * score + review.score / (reviews + 1)
         reviews++
@@ -55,7 +55,7 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
 
   override fun listAll(context: RoutingContext, page: Int) {
     val order = if (context.queryParam("desc").isEmpty()) ReviewEntity.SCORE else ReviewEntity.SCORE.desc()
-    val reviews = data.select(Review::class).orderBy(order).limit(ITEM_PER_PAGE).offset(ITEM_PER_PAGE * page).get().toList()
+    val reviews = data.select(ReviewEntity::class).orderBy(order).limit(ITEM_PER_PAGE).offset(ITEM_PER_PAGE * page).get().toList()
     context.response().endWithJson(reviews)
   }
 }
