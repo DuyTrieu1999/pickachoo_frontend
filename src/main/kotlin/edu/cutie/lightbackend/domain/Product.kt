@@ -12,7 +12,7 @@ interface Product: Persistable {
   @get:Key @get:Generated var id: Int
   @get:Column(nullable = false) var name: String
 
-  @get:Column(value = "Toán")
+  @get:Column(value = "'Toán'")
   var department: String
 
   //@get:Column(nullable = false, index = true)
