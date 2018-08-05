@@ -16,7 +16,7 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
     router.get("$endpoint/user/:uid").handler { findByUserId(it) }
   }
 
-  override fun create(context: RoutingContext) {
+  override suspend fun create(context: RoutingContext) {
     // val user = context.getUserDetail() TODO: Add auth logic
     val review = context.bodyAsJson.mapTo(ReviewEntity::class.java).apply {
       // fromUser = user.userId

@@ -2,89 +2,93 @@ buildscript {
   repositories {
     mavenCentral()
     jcenter()
-    maven { url "https://plugins.gradle.org/m2/" }
+    maven { url "https://plugins.gradle.org/m2" }
   }
 
   dependencies {
-    classpath 'org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.60'
-    classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.60"
+    classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
     classpath "gradle.plugin.io.vertx:vertx-gradle-plugin:0.1.0"
   }
 }
 
-apply plugin: 'kotlin'
-apply plugin: 'java'
-apply plugin: 'eclipse'
-apply plugin: 'application'
-apply plugin: 'com.github.johnrengelman.shadow'
-apply plugin: 'io.vertx.vertx-plugin'
-apply plugin: 'kotlin-kapt'
+apply plugin: "kotlin"
+apply plugin: "java"
+apply plugin: "eclipse"
+apply plugin: "application"
+apply plugin: "com.github.johnrengelman.shadow"
+apply plugin: "io.vertx.vertx-plugin"
+apply plugin: "kotlin-kapt"
 
 repositories {
   mavenCentral()
+  maven { url "http://dl.bintray.com/mbuhot/maven"}
 }
 
-version = '0.0.1-SNAPSHOT'
-group = 'edu.cutie'
-sourceCompatibility = '1.8'
-mainClassName = 'io.vertx.core.Launcher'
+version = "0.0.1-SNAPSHOT"
+group = "edu.cutie"
+sourceCompatibility = "1.8"
+mainClassName = "io.vertx.core.Launcher"
 
 dependencies {
   // TODO use compileOnly instead compile for codegen
   compile "io.vertx:vertx-core"
   compile "io.vertx:vertx-web"
-  compile 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.60'
+  compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.60"
   compile ("io.vertx:vertx-lang-kotlin") {
-    exclude group: 'org.jetbrains.kotlin'
+    exclude group: "org.jetbrains.kotlin"
   }
   compile("io.vertx:vertx-lang-kotlin-coroutines") {
-    exclude group: 'org.jetbrains.kotlin'
+    exclude group: "org.jetbrains.kotlin"
   }
   compile("io.vertx:vertx-jdbc-client")
   compile("io.vertx:vertx-auth-oauth2")
-  compile('io.jsonwebtoken:jjwt:0.9.1')
+  compile("io.jsonwebtoken:jjwt:0.9.1")
 
-  compile('joda-time:joda-time:2.10')
+  compile("joda-time:joda-time:2.10")
 
-  compile('io.requery:requery:1.5.1')
-  compile('io.requery:requery-kotlin:1.5.1')
-  kapt 'io.requery:requery-processor:1.5.1'
+  compile("io.requery:requery:1.5.1")
+  compile("io.requery:requery-kotlin:1.5.1")
+  kapt "io.requery:requery-processor:1.5.1"
 
-  compile('com.zaxxer:HikariCP:3.1.0')
-  compile 'org.hsqldb:hsqldb:2.4.1'
+  compile("com.zaxxer:HikariCP:3.1.0")
+  compile "org.hsqldb:hsqldb:2.4.1"
 
   compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6"
   compile "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5"
 
+  compile "org.elasticsearch.client:elasticsearch-rest-high-level-client:6.3.2"
+  compile "mbuhot:eskotlin:0.4.0"
 
-  // compile 'com.cloudinary:cloudinary-http44:1.19.0'
-  compile 'com.google.flogger:flogger:0.2'
-  runtimeOnly 'com.google.flogger:flogger-system-backend:0.2'
-  compile 'org.slf4j:slf4j-jdk14:1.7.25'
+  // compile "com.cloudinary:cloudinary-http44:1.19.0"
+
+  compile "com.google.flogger:flogger:0.2"
+  runtimeOnly "com.google.flogger:flogger-system-backend:0.2"
+  compile "org.slf4j:slf4j-jdk14:1.7.25"
 }
 
 vertx {
-  mainVerticle = 'edu.cutie.lightbackend.MainVerticle'
+  mainVerticle = "edu.cutie.lightbackend.MainVerticle"
 }
 
 compileKotlin {
   kotlinOptions {
-    jvmTarget = '1.8'
+    jvmTarget = "1.8"
   }
 }
 
 shadowJar {
-  classifier = 'fat'
+  classifier = "fat"
   manifest {
-    attributes 'Main-Verticle': 'edu.cutie.lightbackend.MainVerticle'
+    attributes "Main-Verticle": "edu.cutie.lightbackend.MainVerticle"
   }
   mergeServiceFiles {
-    include 'META-INF/services/io.vertx.core.spi.VerticleFactory'
+    include "META-INF/services/io.vertx.core.spi.VerticleFactory"
   }
-  archiveName = 'quang.jar'
+  archiveName = "quang.jar"
 }
 
-task stage(dependsOn: ['shadowJar'])
+task stage(dependsOn: ["shadowJar"])
 
 kotlin {
   experimental {

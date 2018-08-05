@@ -14,7 +14,7 @@ abstract class Controller(router: Router, endpoint: String, val ITEM_PER_PAGE: I
     router.delete("$endpoint/:id").coroutineHandler { delete(it) }
   }
 
-  open fun create(context: RoutingContext) = notImplementedResponse(context)
+  open suspend fun create(context: RoutingContext) = notImplementedResponse(context)
   open fun update(context: RoutingContext) = notImplementedResponse(context)
   open fun getOne(context: RoutingContext) = notImplementedResponse(context)
   open fun listAll(context: RoutingContext, page: Int) = notImplementedResponse(context)

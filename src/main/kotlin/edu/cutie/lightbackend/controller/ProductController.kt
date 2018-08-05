@@ -5,15 +5,17 @@ import edu.cutie.lightbackend.domain.ProductEntity
 import edu.cutie.lightbackend.helper.Controller
 import edu.cutie.lightbackend.helper.WithLogger
 import edu.cutie.lightbackend.helper.endWithJson
+import edu.cutie.lightbackend.service.SearchService
 import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 
-class ProductController(router: Router): Controller(router, "/product"), WithLogger {
-  override fun create(context: RoutingContext) { // TODO: add support for ReCaptcha
+class ProductController(router: Router, private val searchService: SearchService): Controller(router, "/product"), WithLogger {
+  override suspend fun create(context: RoutingContext) { // TODO: add support for ReCaptcha
     logger.atInfo().log(context.bodyAsString)
     val p = context.bodyAsJson.mapTo(ProductEntity::class.java)
     val np = data.insert(p)
+    searchService.putIfAbsent(np)
     context.response().endWithJson(np)
   }
 
