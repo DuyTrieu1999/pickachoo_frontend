@@ -1,5 +1,6 @@
 package edu.cutie.lightbackend.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import io.requery.*
 import java.sql.Timestamp
 
@@ -8,6 +9,7 @@ enum class ProductType {
 }
 
 @Entity
+@JsonIgnoreProperties("score", "difficulty", "reviews", "createdAt", allowGetters = true)
 interface Product: Persistable {
   @get:Key @get:Generated var id: Int
   @get:Column(nullable = false) var name: String
@@ -27,7 +29,6 @@ interface Product: Persistable {
   @get:Column(value = "50.0")
   var difficulty: Double
 
-  @get:Column(value = "0")
   var reviews: Int
 
   @get:Column(value = "now()")
