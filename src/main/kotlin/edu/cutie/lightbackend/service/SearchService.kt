@@ -1,6 +1,7 @@
 package edu.cutie.lightbackend.service
 
 import edu.cutie.lightbackend.domain.ProductEntity
+import edu.cutie.lightbackend.helper.WithLogger
 import io.vertx.core.Vertx
 import io.vertx.kotlin.coroutines.dispatcher
 import kotlinx.coroutines.experimental.launch
@@ -22,11 +23,11 @@ val elasticsearchClient by lazy {
       HttpHost("localhost", 9200, "http"),
       HttpHost("localhost", 9201, "http")))
 }
-class DefaultSearchService : SearchService {
+class DefaultSearchService : SearchService, WithLogger {
   override suspend fun putIfAbsent(product: ProductEntity) {
     launch(Vertx.currentContext().dispatcher()) {
       val indexRequest = with(product) {
-        IndexRequest("product", "_doc", id.toString()).source(this)
+        IndexRequest("product", "_doc", id.toString()).source("name", name)
       }
       elasticsearchClient.index(indexRequest)
     }

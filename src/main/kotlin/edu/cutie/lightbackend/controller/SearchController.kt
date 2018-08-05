@@ -1,6 +1,7 @@
 package edu.cutie.lightbackend.controller
 
 import edu.cutie.lightbackend.helper.coroutineHandler
+import edu.cutie.lightbackend.helper.endWithJson
 import edu.cutie.lightbackend.service.elasticsearchClient
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
@@ -25,5 +26,7 @@ class SearchController(router: Router, endpoint: String = "/search") {
     val searchSourceBuilder = SearchSourceBuilder().query(query)
     val searchRequest = SearchRequest("product").source(searchSourceBuilder)
     val response = elasticsearchClient.search(searchRequest)
+    val hits = response.hits.hits
+    context.response().endWithJson(hits)
   }
 }
