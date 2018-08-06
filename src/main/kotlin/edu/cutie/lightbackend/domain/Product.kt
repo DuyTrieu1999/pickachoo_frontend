@@ -17,8 +17,8 @@ interface Product: Persistable {
   @get:Column(value = "'Toán'")
   var department: String
 
-  //@get:Column(nullable = false, index = true)
-  //var type: ProductType
+  @get:Column(nullable = false, index = true, value = "'PROFESSOR'")
+  var type: ProductType
 
   var description: String?
   var address: String?
