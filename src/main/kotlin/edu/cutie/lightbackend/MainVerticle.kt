@@ -7,7 +7,9 @@ import com.google.common.flogger.FluentLogger
 import edu.cutie.lightbackend.controller.AuthController
 import edu.cutie.lightbackend.controller.ProductController
 import edu.cutie.lightbackend.controller.ReviewController
+import edu.cutie.lightbackend.controller.SearchController
 import edu.cutie.lightbackend.domain.*
+import edu.cutie.lightbackend.service.DefaultSearchService
 import io.requery.Persistable
 import io.requery.sql.KotlinConfiguration
 import io.requery.sql.KotlinEntityDataStore
@@ -42,9 +44,11 @@ class MainVerticle : CoroutineVerticle() {
     val port = System.getenv("PORT")?.toInt() ?: 8080
     val router = createRouter()
 
+    val searchService = DefaultSearchService()
     AuthController(router)
-    ProductController(router)
+    ProductController(router, searchService)
     ReviewController(router)
+    SearchController(router)
 
     CommandLineRunner()
     data.withTransaction {

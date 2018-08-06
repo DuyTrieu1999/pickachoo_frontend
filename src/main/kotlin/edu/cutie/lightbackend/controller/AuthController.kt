@@ -7,7 +7,6 @@ import edu.cutie.lightbackend.service.getUserDetail
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 
-
 class AuthController(router: Router, path: String = "/auth") {
 
   init {
