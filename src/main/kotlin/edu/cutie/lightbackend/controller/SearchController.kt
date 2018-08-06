@@ -4,6 +4,7 @@ import edu.cutie.lightbackend.helper.WithLogger
 import edu.cutie.lightbackend.helper.coroutineHandler
 import edu.cutie.lightbackend.helper.endWithJson
 import edu.cutie.lightbackend.service.elasticsearchClient
+import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import mbuhot.eskotlin.query.compound.bool
@@ -55,6 +56,7 @@ class SearchController(router: Router, endpoint: String = "/search"): WithLogger
       context.response().endWithJson(hits)
     }, {
       logger.atWarning().withCause(it).log("Query %s failed", context.request().query())
+      context.response().endWithJson(HttpResponseStatus.INTERNAL_SERVER_ERROR.reasonPhrase(), HttpResponseStatus.INTERNAL_SERVER_ERROR)
     }))
   }
 }
