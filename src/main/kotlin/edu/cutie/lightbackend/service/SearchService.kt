@@ -50,6 +50,10 @@ class DefaultSearchService : SearchService, WithLogger {
       */
 
     }
-    elasticsearchClient.indexAsync(indexRequest, ActionListener.wrap {})
+    elasticsearchClient.indexAsync(indexRequest, ActionListener.wrap({
+      logger.atInfo().log("Indexed %s", product)
+    }, {
+      logger.atWarning().log("Failed to index %s", product)
+    }))
   }
 }

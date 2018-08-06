@@ -12,7 +12,6 @@ import io.vertx.ext.web.RoutingContext
 
 class ProductController(router: Router, private val searchService: SearchService): Controller(router, "/product"), WithLogger {
   override suspend fun create(context: RoutingContext) { // TODO: add support for ReCaptcha
-    logger.atInfo().log(context.bodyAsString)
     val p = context.bodyAsJson.mapTo(ProductEntity::class.java)
     val np = data.insert(p)
     searchService.putIfAbsent(np)

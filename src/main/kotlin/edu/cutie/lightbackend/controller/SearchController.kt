@@ -5,7 +5,9 @@ import edu.cutie.lightbackend.helper.endWithJson
 import edu.cutie.lightbackend.service.elasticsearchClient
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
+import mbuhot.eskotlin.query.compound.bool
 import mbuhot.eskotlin.query.fulltext.multi_match
+import mbuhot.eskotlin.query.term.range
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.search.builder.SearchSourceBuilder
 
@@ -17,16 +19,37 @@ class SearchController(router: Router, endpoint: String = "/search") {
     router.get(endpoint).coroutineHandler { search(it) }
   }
 
-  private fun search(context: RoutingContext) {
+  // Sample http://localhost:8080/search?q=Quang&score=1&score=100&difficulty=2&difficulty=100
+  private suspend fun search(context: RoutingContext) {
     val q = context.queryParam("q").firstOrNull() ?: "Quang"
-    val query = multi_match {
-      query = q
-      fields = listOf("name^3", "description")
+    val score = context.queryParam("score").take(2).map(String::toDouble)
+    val difficulty = context.queryParam("difficulty").take(2).map(String::toDouble)
+    val query = bool {
+      must {
+        multi_match {
+          query = q
+          fields = listOf("name^5", "description^2", "department^3", "address") // TODO: tweak this
+        }
+      }
+      filter = listOf(
+        range {
+          "score" {
+            from = score[0]
+            to = score[1]
+          }
+        },
+        range {
+          "difficulty" {
+            from = difficulty[0]
+            to = difficulty[1]
+          }
+        }
+      )
     }
     val searchSourceBuilder = SearchSourceBuilder().query(query)
     val searchRequest = SearchRequest("product").source(searchSourceBuilder)
     val response = elasticsearchClient.search(searchRequest)
-    val hits = response.hits.hits
+    val hits = response.hits.hits.map { it.sourceAsMap }
     context.response().endWithJson(hits)
   }
 }
