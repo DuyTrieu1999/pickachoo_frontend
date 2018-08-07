@@ -39,27 +39,27 @@ dependencies {
   implementation ("io.vertx:vertx-lang-kotlin") {
     exclude group: "org.jetbrains.kotlin"
   }
-  implementation("io.vertx:vertx-lang-kotlin-coroutines") {
+  implementation ("io.vertx:vertx-lang-kotlin-coroutines") {
     exclude group: "org.jetbrains.kotlin"
   }
-  implementation("io.vertx:vertx-jdbc-client")
-  implementation("io.vertx:vertx-auth-oauth2")
-  implementation("io.jsonwebtoken:jjwt:0.9.1")
+  implementation "io.vertx:vertx-jdbc-client"
+  implementation "io.vertx:vertx-auth-oauth2"
+  implementation "io.jsonwebtoken:jjwt:0.9.1"
 
-  implementation("joda-time:joda-time:2.10")
+  implementation "joda-time:joda-time:2.10"
 
-  implementation("io.requery:requery:1.5.1")
-  implementation("io.requery:requery-kotlin:1.5.1")
+  implementation "io.requery:requery:1.5.1"
+  implementation "io.requery:requery-kotlin:1.5.1"
   kapt "io.requery:requery-processor:1.5.1"
 
-  implementation("com.zaxxer:HikariCP:3.1.0")
+  implementation "com.zaxxer:HikariCP:3.1.0"
   implementation "org.hsqldb:hsqldb:2.4.1"
 
   implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.9.6"
   implementation "com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5"
 
   implementation "org.elasticsearch.client:elasticsearch-rest-high-level-client:6.3.2"
-  implementation "com.github.mbuhot:eskotlin:master-SNAPSHOT"
+  implementation "com.github.quangio:eskotlin:master-SNAPSHOT"
 
   // implementation "com.cloudinary:cloudinary-http44:1.19.0"
 
