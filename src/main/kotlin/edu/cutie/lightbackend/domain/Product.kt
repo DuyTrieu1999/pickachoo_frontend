@@ -24,6 +24,11 @@ interface Product: Persistable {
   var address: String?
   var links: String?
 
+  var point: String // WKT to store location may be
+
+  var gradeFrom: Int // range
+  var gradeTo: Int
+
   @get:Column(value = "50.0")
   var score: Double
   @get:Column(value = "50.0")

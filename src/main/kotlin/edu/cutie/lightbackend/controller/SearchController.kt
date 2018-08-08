@@ -24,7 +24,7 @@ class SearchController(router: Router, endpoint: String = "/search"): WithLogger
 
   // Sample http://localhost:8080/search?q=Quang&score=1&score=100&difficulty=2&difficulty=100
   private fun search(context: RoutingContext) {
-    val q = context.queryParam("q").firstOrNull() ?: "Quang"
+    val q = context.queryParam("q").firstOrNull() ?: ""
     val score = context.queryParam("score").take(2).map(String::toDouble)
     val difficulty = context.queryParam("difficulty").take(2).map(String::toDouble)
     val query = bool {

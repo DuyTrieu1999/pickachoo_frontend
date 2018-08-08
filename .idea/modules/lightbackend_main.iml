@@ -64,7 +64,7 @@
     <orderEntry type="library" name="Gradle: io.jsonwebtoken:jjwt:0.9.1" level="project" />
     <orderEntry type="library" name="Gradle: com.fasterxml.jackson.datatype:jackson-datatype-joda:2.9.5" level="project" />
     <orderEntry type="library" name="Gradle: org.elasticsearch.client:elasticsearch-rest-high-level-client:6.3.2" level="project" />
-    <orderEntry type="library" name="Gradle: com.github.mbuhot:eskotlin:master-SNAPSHOT" level="project" />
+    <orderEntry type="library" name="Gradle: com.github.quangio:eskotlin:master-SNAPSHOT" level="project" />
     <orderEntry type="library" name="Gradle: org.elasticsearch:elasticsearch:6.3.2" level="project" />
     <orderEntry type="library" name="Gradle: joda-time:joda-time:2.10" level="project" />
     <orderEntry type="library" name="Gradle: io.requery:requery-kotlin:1.5.1" level="project" />

@@ -44,6 +44,8 @@ class MainVerticle : CoroutineVerticle() {
     val port = System.getenv("PORT")?.toInt() ?: 8080
     val router = createRouter()
 
+
+
     val searchService = DefaultSearchService()
     AuthController(router)
     ProductController(router, searchService)
