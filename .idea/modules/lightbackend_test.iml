@@ -56,8 +56,10 @@
     <orderEntry type="library" name="Gradle: io.vertx:vertx-lang-kotlin:3.5.3" level="project" />
     <orderEntry type="library" name="Gradle: io.vertx:vertx-lang-kotlin-coroutines:3.5.3" level="project" />
     <orderEntry type="library" name="Gradle: io.vertx:vertx-auth-oauth2:3.5.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.vertx:vertx-web-client:3.5.3" level="project" />
     <orderEntry type="library" name="Gradle: io.vertx:vertx-auth-common:3.5.3" level="project" />
     <orderEntry type="library" name="Gradle: io.vertx:vertx-jwt:3.5.3" level="project" />
+    <orderEntry type="library" name="Gradle: io.vertx:vertx-web-common:3.5.3" level="project" />
     <orderEntry type="library" name="Gradle: io.vertx:vertx-core:3.5.3" level="project" />
     <orderEntry type="library" name="Gradle: org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.60" level="project" />
     <orderEntry type="library" name="Gradle: io.vertx:vertx-jdbc-client:3.5.3" level="project" />

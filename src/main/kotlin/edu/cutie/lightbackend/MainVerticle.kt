@@ -8,8 +8,11 @@ import edu.cutie.lightbackend.controller.AuthController
 import edu.cutie.lightbackend.controller.ProductController
 import edu.cutie.lightbackend.controller.ReviewController
 import edu.cutie.lightbackend.controller.SearchController
-import edu.cutie.lightbackend.domain.*
+import edu.cutie.lightbackend.domain.Models
+import edu.cutie.lightbackend.domain.ProductEntity
 import edu.cutie.lightbackend.service.DefaultSearchService
+import edu.cutie.lightbackend.service.DefaultUserService
+import edu.cutie.lightbackend.service.UserService
 import io.requery.Persistable
 import io.requery.sql.KotlinConfiguration
 import io.requery.sql.KotlinEntityDataStore
@@ -20,10 +23,12 @@ import io.vertx.core.json.Json
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.jdbc.spi.impl.HikariCPDataSourceProvider
 import io.vertx.ext.web.Router
+import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.handler.BodyHandler
 import io.vertx.ext.web.handler.CorsHandler
 import io.vertx.ext.web.handler.StaticHandler
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.ext.web.client.WebClientOptions
 
 
 val data: KotlinEntityDataStore<Persistable> by lazy {
@@ -39,22 +44,22 @@ val data: KotlinEntityDataStore<Persistable> by lazy {
 private val logger = FluentLogger.forEnclosingClass()
 
 class MainVerticle : CoroutineVerticle() {
-
+  private val userService: UserService = DefaultUserService()
   override suspend fun start() {
     val port = System.getenv("PORT")?.toInt() ?: 8080
     val router = createRouter()
-
+    val options = WebClientOptions(userAgent = "XemThay/1.2.3", logActivity = true)
+    val webClient = WebClient.create(vertx, options)
 
 
     val searchService = DefaultSearchService()
-    AuthController(router)
+    AuthController(router, webClient, userService)
     ProductController(router, searchService)
     ReviewController(router)
     SearchController(router)
 
     CommandLineRunner()
     data.withTransaction {
-      insert(PersonEntity().apply { username = "Quang Luong" })
       insert(ProductEntity().apply { name = "Prof" })
     }
 
