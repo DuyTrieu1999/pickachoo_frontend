@@ -4,6 +4,7 @@ import edu.cutie.lightbackend.helper.WithLogger
 import edu.cutie.lightbackend.helper.coroutineHandler
 import edu.cutie.lightbackend.helper.endWithJson
 import edu.cutie.lightbackend.service.elasticsearchClient
+import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import mbuhot.eskotlin.query.compound.bool
@@ -23,7 +24,7 @@ class SearchController(router: Router, endpoint: String = "/search"): WithLogger
 
   // Sample http://localhost:8080/search?q=Quang&score=1&score=100&difficulty=2&difficulty=100
   private fun search(context: RoutingContext) {
-    val q = context.queryParam("q").firstOrNull() ?: "Quang"
+    val q = context.queryParam("q").firstOrNull() ?: ""
     val score = context.queryParam("score").take(2).map(String::toDouble)
     val difficulty = context.queryParam("difficulty").take(2).map(String::toDouble)
     val query = bool {
@@ -55,6 +56,7 @@ class SearchController(router: Router, endpoint: String = "/search"): WithLogger
       context.response().endWithJson(hits)
     }, {
       logger.atWarning().withCause(it).log("Query %s failed", context.request().query())
+      context.response().endWithJson(HttpResponseStatus.INTERNAL_SERVER_ERROR.reasonPhrase(), HttpResponseStatus.INTERNAL_SERVER_ERROR)
     }))
   }
 }

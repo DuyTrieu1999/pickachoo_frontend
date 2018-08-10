@@ -35,7 +35,7 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
 
   private fun findByProductId(context: RoutingContext) {
     val productId = context.pathParam("id").toInt()
-    val fields = arrayOf(PersonEntity.USERNAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY_SCORE, ReviewEntity.SCORE)
+    val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY_SCORE, ReviewEntity.SCORE)
     val result = data
       .select(*fields)
       .join(PersonEntity::class).on(ReviewEntity.FROM_USER eq PersonEntity.ID)
@@ -45,7 +45,7 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
 
   private fun findByUserId(context: RoutingContext) {
     val userId = context.pathParam("uid").toInt()
-    val fields = arrayOf(PersonEntity.USERNAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY_SCORE, ReviewEntity.SCORE)
+    val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY_SCORE, ReviewEntity.SCORE)
     val result = data
       .select(*fields)
       .join(PersonEntity::class).on(ReviewEntity.FROM_USER eq PersonEntity.ID)
