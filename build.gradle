@@ -63,7 +63,7 @@ dependencies {
 
   implementation "io.vertx:vertx-web-client:3.5.3"
 
-  // implementation "com.cloudinary:cloudinary-http44:1.19.0"
+  implementation "com.cloudinary:cloudinary-http44:1.19.0"
 
   implementation "com.google.flogger:flogger:0.2"
   runtimeOnly "com.google.flogger:flogger-system-backend:0.2"

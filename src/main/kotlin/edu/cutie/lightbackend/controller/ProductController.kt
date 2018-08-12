@@ -1,5 +1,7 @@
 package edu.cutie.lightbackend.controller
 
+import com.cloudinary.Cloudinary
+import com.cloudinary.utils.ObjectUtils
 import edu.cutie.lightbackend.data
 import edu.cutie.lightbackend.domain.ProductEntity
 import edu.cutie.lightbackend.helper.Controller
@@ -9,10 +11,21 @@ import edu.cutie.lightbackend.service.SearchService
 import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
+import kotlinx.coroutines.experimental.async
+import kotlinx.coroutines.experimental.launch
 
-class ProductController(router: Router, private val searchService: SearchService): Controller(router, "/product"), WithLogger {
+class ProductController(router: Router, private val searchService: SearchService) : Controller(router, "/product"), WithLogger {
+  companion object {
+    private val cloudinary = Cloudinary()
+  }
+
   override suspend fun create(context: RoutingContext) { // TODO: add support for ReCaptcha
     val p = context.bodyAsJson.mapTo(ProductEntity::class.java)
+
+    val response = async {
+      cloudinary.uploader().upload(p.picture, ObjectUtils.emptyMap())
+    }
+    p.picture = response.await()["secure_url"].toString()
     val np = data.insert(p)
     searchService.putIfAbsent(np)
     context.response().endWithJson(np)
