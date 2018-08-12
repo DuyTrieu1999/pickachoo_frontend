@@ -9,14 +9,17 @@ import edu.cutie.lightbackend.helper.WithLogger
 import edu.cutie.lightbackend.helper.endWithJson
 import edu.cutie.lightbackend.service.SearchService
 import io.netty.handler.codec.http.HttpResponseStatus
+import io.requery.meta.AttributeDelegate
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import kotlinx.coroutines.experimental.async
-import kotlinx.coroutines.experimental.launch
+import kotlin.reflect.full.staticProperties
 
 class ProductController(router: Router, private val searchService: SearchService) : Controller(router, "/product"), WithLogger {
   companion object {
     private val cloudinary = Cloudinary()
+    val orders: Map<String, AttributeDelegate<ProductEntity, Any>?> = ProductEntity::class.staticProperties.associateBy({ it.name.toLowerCase() }, { it.get() as? AttributeDelegate<ProductEntity, Any> })
+    // TODO: hacky reflection. use code generation or just type it out instead
   }
 
   override suspend fun create(context: RoutingContext) { // TODO: add support for ReCaptcha
@@ -31,8 +34,11 @@ class ProductController(router: Router, private val searchService: SearchService
     context.response().endWithJson(np)
   }
 
-  override fun listAll(context: RoutingContext, page: Int) {
-    val p = data.select(ProductEntity::class).orderBy(ProductEntity.ID).limit(ITEM_PER_PAGE).offset(ITEM_PER_PAGE * page).get().toList()
+  override fun listAll(context: RoutingContext, limit: Int, offset: Int) {
+    val order = context.queryParam("order").mapNotNull(String::toLowerCase).mapNotNull {
+      if (it.first() == '-') orders[it.substring(1)]?.desc() else orders[it]
+    }
+    val p = data.select(ProductEntity::class).orderBy(*order.toTypedArray()).limit(limit).offset(offset).get().toList()
     context.response().endWithJson(p)
   }
 
