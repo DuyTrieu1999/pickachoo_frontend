@@ -1,5 +1,7 @@
 package edu.cutie.lightbackend.controller
 
+import edu.cutie.lightbackend.data
+import edu.cutie.lightbackend.domain.ProductEntity
 import edu.cutie.lightbackend.helper.WithLogger
 import edu.cutie.lightbackend.helper.coroutineHandler
 import edu.cutie.lightbackend.helper.endWithJson
@@ -13,6 +15,7 @@ import mbuhot.eskotlin.query.term.range
 import org.elasticsearch.action.ActionListener
 import org.elasticsearch.action.search.SearchRequest
 import org.elasticsearch.index.query.MoreLikeThisQueryBuilder
+import org.elasticsearch.index.query.MultiMatchQueryBuilder
 import org.elasticsearch.search.builder.SearchSourceBuilder
 
 
@@ -74,7 +77,16 @@ class SearchController(router: Router, endpoint: String = "/search") : WithLogge
     val searchRequest = SearchRequest("product").source(searchSourceBuilder)
     elasticSearchClient.searchAsync(searchRequest, ActionListener.wrap({ response ->
       val hits = response.hits.hits.map { it.sourceAsMap }
-      context.response().endWithJson(hits)
+      if (hits.isEmpty()) {
+        val p = data.select(ProductEntity::class).where(ProductEntity.ID.eq(id.toInt())).get().first()
+        val recommendations = data
+          .select(ProductEntity::class)
+          .where(ProductEntity.DEPARTMENT.like(p.department))
+          .orderBy(ProductEntity.SCORE.desc(), ProductEntity.REVIEWS.desc()).get().toList()
+        context.response().endWithJson(recommendations)
+      } else {
+        context.response().endWithJson(hits)
+      }
     }, {
       logger.atWarning().withCause(it).log("Query %s failed", context.request().query())
       context.response().endWithJson(HttpResponseStatus.INTERNAL_SERVER_ERROR.reasonPhrase(), HttpResponseStatus.INTERNAL_SERVER_ERROR)
