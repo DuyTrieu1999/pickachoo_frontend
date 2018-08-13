@@ -29,6 +29,8 @@ interface Product: Persistable {
   var gradeFrom: Int // range
   var gradeTo: Int
 
+  var picture: String?
+
   @get:Column(value = "50.0")
   var score: Double
   @get:Column(value = "50.0")

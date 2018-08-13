@@ -6,6 +6,7 @@ import edu.cutie.lightbackend.helper.Controller
 import edu.cutie.lightbackend.helper.WithLogger
 import edu.cutie.lightbackend.helper.endWithJson
 import edu.cutie.lightbackend.helper.toMap
+import io.requery.kotlin.Offset
 import io.requery.kotlin.eq
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
@@ -53,9 +54,9 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
     context.response().endWithJson(result)
   }
 
-  override fun listAll(context: RoutingContext, page: Int) {
+  override fun listAll(context: RoutingContext, limit: Int, offset: Int) {
     val order = if (context.queryParam("desc").isEmpty()) ReviewEntity.SCORE else ReviewEntity.SCORE.desc()
-    val reviews = data.select(ReviewEntity::class).orderBy(order).limit(ITEM_PER_PAGE).offset(ITEM_PER_PAGE * page).get().toList()
+    val reviews = data.select(ReviewEntity::class).orderBy(order).limit(limit).offset(offset).get().toList()
     context.response().endWithJson(reviews)
   }
 }
