@@ -20,7 +20,7 @@ interface SearchService {
   suspend fun putIfAbsent(product: ProductEntity)
 }
 
-val elasticsearchClient by lazy {
+val elasticSearchClient by lazy {
   val host: String = System.getenv("ELASTICSEARCH_HOST") ?: "localhost"
   val port: Int = System.getenv("ELASTICSEARCH_PORT")?.toInt() ?: 9200
   val scheme: String = System.getenv("ELASTICSEARCH_SCHEME") ?: "http"
@@ -50,7 +50,7 @@ class DefaultSearchService : SearchService, WithLogger {
       */
 
     }
-    elasticsearchClient.indexAsync(indexRequest, ActionListener.wrap({
+    elasticSearchClient.indexAsync(indexRequest, ActionListener.wrap({
       logger.atInfo().log("Indexed %s", product)
     }, {
       logger.atWarning().withCause(it).log("Failed to index %s", product)
