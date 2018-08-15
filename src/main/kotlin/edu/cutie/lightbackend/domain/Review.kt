@@ -1,6 +1,6 @@
 package edu.cutie.lightbackend.domain
 
-import edu.cutie.lightbackend.domain.converter.StringListConverter
+import edu.cutie.lightbackend.converter.StringListConverter
 import io.requery.*
 import java.sql.Timestamp
 

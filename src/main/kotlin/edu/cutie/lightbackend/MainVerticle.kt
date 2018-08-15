@@ -9,6 +9,7 @@ import edu.cutie.lightbackend.controller.ProductController
 import edu.cutie.lightbackend.controller.ReviewController
 import edu.cutie.lightbackend.controller.SearchController
 import edu.cutie.lightbackend.domain.Models
+import edu.cutie.lightbackend.domain.PersonEntity
 import edu.cutie.lightbackend.domain.ProductEntity
 import edu.cutie.lightbackend.service.DefaultSearchService
 import edu.cutie.lightbackend.service.DefaultUserService
@@ -61,6 +62,10 @@ class MainVerticle : CoroutineVerticle() {
     CommandLineRunner()
     data.withTransaction {
       insert(ProductEntity().apply { name = "Prof" })
+      insert(PersonEntity().apply {
+        name = "Quang"
+        email = "quang@gmail.com"
+      })
     }
 
     Json.mapper.apply {
