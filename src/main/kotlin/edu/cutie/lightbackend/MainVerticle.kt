@@ -62,7 +62,10 @@ class MainVerticle : CoroutineVerticle() {
     CommandLineRunner()
     data.withTransaction {
       insert(ProductEntity().apply { name = "Prof" })
-      insert(PersonEntity().apply { name = "Quang" })
+      insert(PersonEntity().apply {
+        name = "Quang"
+        email = "quang@gmail.com"
+      })
     }
 
     Json.mapper.apply {
