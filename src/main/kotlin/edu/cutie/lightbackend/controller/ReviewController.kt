@@ -17,6 +17,8 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
     router.get("$endpoint/user/:uid").handler { findByUserId(it) }
   }
 
+  private val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY_SCORE, ReviewEntity.SCORE)
+
   override suspend fun create(context: RoutingContext) {
     // val user = context.getUserDetail() TODO: Add auth logic
     val review = context.bodyAsJson.mapTo(ReviewEntity::class.java).apply {
@@ -36,20 +38,19 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
 
   private fun findByProductId(context: RoutingContext) {
     val productId = context.pathParam("id").toInt()
-    val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY_SCORE, ReviewEntity.SCORE)
     val result = data
       .select(*fields)
       .join(PersonEntity::class).on(ReviewEntity.FROM_USER eq PersonEntity.ID)
-      .where(ReviewEntity.TO_PRODUCT eq productId).get().map { it.toMap(fields) }
+      .where(ReviewEntity.TO_PRODUCT eq productId).get()
+      .map { t -> t.toMap(fields.filterNot { it == PersonEntity.NAME && t[ReviewEntity.PRIVATE_LEVEL] > 0 }.toTypedArray()) }
     context.response().endWithJson(result)
   }
 
   private fun findByUserId(context: RoutingContext) {
     val userId = context.pathParam("uid").toInt()
-    val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY_SCORE, ReviewEntity.SCORE)
     val result = data
       .select(*fields)
-      .join(PersonEntity::class).on(ReviewEntity.FROM_USER eq PersonEntity.ID)
+      .join(PersonEntity::class).on((ReviewEntity.FROM_USER eq PersonEntity.ID) and (ReviewEntity.PRIVATE_LEVEL eq 0))
       .where(ReviewEntity.FROM_USER eq userId).get().map { it.toMap(fields) }
     context.response().endWithJson(result)
   }

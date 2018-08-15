@@ -13,6 +13,7 @@ interface Review: Persistable {
   var score: Int
   var difficultyScore: Int
   var comment: String
+  var privateLevel: Int
   @get:Column(value = "now()")
   var createdAt: Timestamp
 }
