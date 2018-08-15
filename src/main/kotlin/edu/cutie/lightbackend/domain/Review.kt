@@ -1,5 +1,6 @@
 package edu.cutie.lightbackend.domain
 
+import edu.cutie.lightbackend.domain.converter.StringListConverter
 import io.requery.*
 import java.sql.Timestamp
 
@@ -14,6 +15,8 @@ interface Review: Persistable {
   var difficultyScore: Int
   var comment: String
   var privateLevel: Int
+  @get:Convert(StringListConverter::class)
+  var tags: List<String>
   @get:Column(value = "now()")
   var createdAt: Timestamp
 }
