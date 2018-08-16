@@ -17,7 +17,7 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
     router.get("$endpoint/user/:uid").handler { findByUserId(it) }
   }
 
-  private val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY_SCORE, ReviewEntity.SCORE)
+  private val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY, ReviewEntity.SCORE)
 
   override suspend fun create(context: RoutingContext) {
     // val user = context.getUserDetail() TODO: Add auth logic
@@ -27,7 +27,7 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
     val p = data.withTransaction {
       insert(review)
       val p = select(ProductEntity::class).where(ProductEntity.ID eq review.toProduct).get().first().apply {
-        difficulty = 1.0 * reviews / (reviews + 1) * difficulty + review.difficultyScore / (reviews + 1)
+        difficulty = 1.0 * reviews / (reviews + 1) * difficulty + review.difficulty / (reviews + 1)
         score = 1.0 * reviews / (reviews + 1) * score + review.score / (reviews + 1)
         reviews++
       }
