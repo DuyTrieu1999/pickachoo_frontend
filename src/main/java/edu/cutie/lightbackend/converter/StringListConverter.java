@@ -47,6 +47,6 @@ public class StringListConverter implements Converter<List<String>, String> {
 
   @Override
   public List<String> convertToMapped(Class<? extends List<String>> type, String value) {
-    return (value == null) ? Collections.emptyList() : Arrays.asList(value.split(SEPARATOR));
+    return (value == null || value.isEmpty()) ? Collections.emptyList() : Arrays.asList(value.split(SEPARATOR));
   }
 }

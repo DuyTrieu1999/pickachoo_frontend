@@ -11,6 +11,7 @@ import edu.cutie.lightbackend.controller.SearchController
 import edu.cutie.lightbackend.domain.Models
 import edu.cutie.lightbackend.domain.PersonEntity
 import edu.cutie.lightbackend.domain.ProductEntity
+import edu.cutie.lightbackend.domain.ReviewEntity
 import edu.cutie.lightbackend.service.DefaultSearchService
 import edu.cutie.lightbackend.service.DefaultUserService
 import edu.cutie.lightbackend.service.UserService
@@ -61,11 +62,17 @@ class MainVerticle : CoroutineVerticle() {
 
     CommandLineRunner()
     data.withTransaction {
-      insert(ProductEntity().apply { name = "Prof" })
-      insert(PersonEntity().apply {
+      val product = insert(ProductEntity().apply { name = "Prof" })
+      val person = insert(PersonEntity().apply {
         name = "Quang"
         email = "quang@gmail.com"
       })
+      /*
+      insert(ReviewEntity().apply {
+        fromUser = person.id
+        toProduct = product.id
+      })
+      */
     }
 
     Json.mapper.apply {
