@@ -17,7 +17,9 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
     router.get("$endpoint/user/:uid").handler { findByUserId(it) }
   }
 
-  private val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY, ReviewEntity.SCORE)
+  companion object {
+    private val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY, ReviewEntity.SCORE, ReviewEntity.PRIVATE_LEVEL)
+  }
 
   override suspend fun create(context: RoutingContext) {
     // val user = context.getUserDetail() TODO: Add auth logic
