@@ -1,13 +1,15 @@
 package edu.cutie.lightbackend.controller
 
 import edu.cutie.lightbackend.data
-import edu.cutie.lightbackend.domain.*
+import edu.cutie.lightbackend.domain.PersonEntity
+import edu.cutie.lightbackend.domain.ProductEntity
+import edu.cutie.lightbackend.domain.ReviewEntity
+import edu.cutie.lightbackend.domain.validate
 import edu.cutie.lightbackend.helper.Controller
 import edu.cutie.lightbackend.helper.WithLogger
 import edu.cutie.lightbackend.helper.endWithJson
 import edu.cutie.lightbackend.helper.toMap
-import io.requery.kotlin.Offset
-import io.requery.kotlin.eq
+import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 
@@ -26,6 +28,11 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
     // val user = context.getUserDetail() TODO: Add auth logic
     val review = context.bodyAsJson.mapTo(ReviewEntity::class.java).apply {
       // fromUser = user.userId
+    }
+    if (!review.validate()){
+      context.response().endWithJson("Validation Failed", HttpResponseStatus.BAD_REQUEST)
+      logger.atWarning().log("Validation failed for review %s", review)
+      return
     }
     val p = data.withTransaction {
       insert(review)

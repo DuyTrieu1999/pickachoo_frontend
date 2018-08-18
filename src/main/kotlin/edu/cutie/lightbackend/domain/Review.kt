@@ -22,3 +22,5 @@ interface Review: Persistable {
   @get:Column(value = "now()")
   var createdAt: Timestamp
 }
+
+fun ReviewEntity.validate() = privateLevel in (0..1) && tags.size <= 3 && score in (0..100) && difficulty in (0..100)
