@@ -4,6 +4,7 @@ import com.cloudinary.Cloudinary
 import com.cloudinary.utils.ObjectUtils
 import edu.cutie.lightbackend.data
 import edu.cutie.lightbackend.domain.ProductEntity
+import edu.cutie.lightbackend.domain.validate
 import edu.cutie.lightbackend.helper.Controller
 import edu.cutie.lightbackend.helper.WithLogger
 import edu.cutie.lightbackend.helper.endWithJson
@@ -18,13 +19,17 @@ import kotlin.reflect.full.staticProperties
 class ProductController(router: Router, private val searchService: SearchService) : Controller(router, "/product"), WithLogger {
   companion object {
     private val cloudinary = Cloudinary()
-    val orders: Map<String, AttributeDelegate<ProductEntity, Any>?> = ProductEntity::class.staticProperties.associateBy({ it.name.toLowerCase() }, { it.get() as? AttributeDelegate<ProductEntity, Any> })
+    private val orders: Map<String, AttributeDelegate<ProductEntity, Any>?> = ProductEntity::class.staticProperties.associateBy({ it.name.toLowerCase() }, { it.get() as? AttributeDelegate<ProductEntity, Any> })
     // TODO: hacky reflection. use code generation or just type it out instead
   }
 
   override suspend fun create(context: RoutingContext) { // TODO: add support for ReCaptcha
     val p = context.bodyAsJson.mapTo(ProductEntity::class.java)
-
+    if (!p.validate()) {
+      context.response().endWithJson("Validation Failed", HttpResponseStatus.BAD_REQUEST)
+      logger.atWarning().log("Validation failed for product %s", p)
+      return
+    }
     val response = async {
       cloudinary.uploader().upload(p.picture, ObjectUtils.emptyMap())
     }

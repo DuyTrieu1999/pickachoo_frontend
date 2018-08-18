@@ -41,3 +41,6 @@ interface Product: Persistable {
   @get:Column(value = "now()")
   var createdAt: Timestamp
 }
+
+fun ProductEntity.validate() = gradeFrom >= 3 && gradeTo <= 13
+  && department.length < 20 && (description?.length ?: 0) < 500
