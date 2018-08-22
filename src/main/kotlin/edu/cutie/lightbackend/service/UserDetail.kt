@@ -6,6 +6,7 @@ import edu.cutie.lightbackend.helper.endWithJson
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
 import io.netty.handler.codec.http.HttpResponseStatus
+import io.vertx.core.http.HttpHeaders
 import io.vertx.ext.web.RoutingContext
 import org.joda.time.DateTime
 
@@ -19,7 +20,7 @@ private val logger = FluentLogger.forEnclosingClass()
 fun RoutingContext.getUserDetail(): UserDetail = try {
   val claims = Jwts.parser()
     .setSigningKey(SecurityConfig.secretJwtKey)
-    .parseClaimsJws(request().getHeader("Authorization"))
+    .parseClaimsJws(request().getHeader(HttpHeaders.AUTHORIZATION))
     .body
   with(claims) {
     UserDetail(get("id") as Int, Role.valueOf(get("role").toString()))
