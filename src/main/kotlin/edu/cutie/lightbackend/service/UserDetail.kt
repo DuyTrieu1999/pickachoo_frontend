@@ -17,7 +17,7 @@ enum class Role(val id: Int) {
 
 private val logger = FluentLogger.forEnclosingClass()
 
-fun RoutingContext.getUserDetail(): UserDetail = try {
+fun RoutingContext.getUserDetail() = try {
   val claims = Jwts.parser()
     .setSigningKey(SecurityConfig.secretJwtKey)
     .parseClaimsJws(request().getHeader(HttpHeaders.AUTHORIZATION))

@@ -24,8 +24,8 @@ interface SearchService {
 }
 
 val elasticSearchClient by lazy {
-  val host: String = System.getenv("ELASTICSEARCH_HOST") ?: "localhost"
-  val port: Int = System.getenv("ELASTICSEARCH_PORT")?.toInt() ?: 9200
+  val host = System.getenv("ELASTICSEARCH_HOST") ?: "localhost"
+  val port = System.getenv("ELASTICSEARCH_PORT")?.toInt() ?: 9200
   val scheme: String = System.getenv("ELASTICSEARCH_SCHEME") ?: "http"
   val username = System.getenv("ELASTICSEARCH_USER") ?: "elastic"
   val password = System.getenv("ELASTICSEARCH_PASSWORD")
@@ -59,8 +59,13 @@ class DefaultSearchService : SearchService, WithLogger {
       val indexRequest = IndexRequest("product", "_doc", "" + it.id).source(Json.encode(it), XContentType.JSON)
       bulkRequest.add(indexRequest)
     }
-    elasticSearchClient.bulkAsync(bulkRequest, ActionListener.wrap ({}, {
-      logger.atWarning().withCause(it).log("Fail to index bulk request")
+    elasticSearchClient.bulkAsync(bulkRequest, ActionListener.wrap ({
+      logger.atInfo().log("Bulk request took %s", it.took)
+      if (it.hasFailures()) {
+        logger.atWarning().log(it.buildFailureMessage())
+      }
+    }, {
+      logger.atWarning().withCause(it).log("Fail to index bulk request %s", bulkRequest.description)
     }))
   }
 }
