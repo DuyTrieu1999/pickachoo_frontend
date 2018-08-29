@@ -4,7 +4,7 @@ import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 
-abstract class Controller(router: Router, endpoint: String, val ITEM_PER_PAGE: Int = 250) {
+abstract class Controller(router: Router, endpoint: String, private val ITEM_PER_PAGE: Int = 250) {
   init {
     router.post("$endpoint/create").coroutineHandler { create(it) }
     router.put("$endpoint/update").coroutineHandler { update(it) }
