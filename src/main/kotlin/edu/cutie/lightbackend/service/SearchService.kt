@@ -1,5 +1,6 @@
 package edu.cutie.lightbackend.service
 
+import edu.cutie.lightbackend.data
 import edu.cutie.lightbackend.domain.ProductEntity
 import edu.cutie.lightbackend.helper.WithLogger
 import io.vertx.core.json.Json
@@ -8,6 +9,7 @@ import org.apache.http.auth.AuthScope
 import org.apache.http.auth.UsernamePasswordCredentials
 import org.apache.http.impl.client.BasicCredentialsProvider
 import org.elasticsearch.action.ActionListener
+import org.elasticsearch.action.bulk.BulkRequest
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.client.RestClient
 import org.elasticsearch.client.RestHighLevelClient
@@ -18,6 +20,7 @@ import org.elasticsearch.common.xcontent.XContentType
 // Reading: https://github.com/hubrick/vertx-elasticsearch-service
 interface SearchService {
   suspend fun putIfAbsent(product: ProductEntity)
+  suspend fun syncProductWithDatabase()
 }
 
 val elasticSearchClient by lazy {
@@ -41,19 +44,23 @@ val elasticSearchClient by lazy {
 class DefaultSearchService : SearchService, WithLogger {
   override suspend fun putIfAbsent(product: ProductEntity) {
     val indexRequest = with(product) {
-      IndexRequest("product", "_doc", id.toString()).source(Json.encodePrettily(this), XContentType.JSON)
-      /*
-      .source("name", name,
-        "department", department,
-        "reviews", reviews
-      )
-      */
-
+      IndexRequest("product", "_doc", "" + id).source(Json.encode(this), XContentType.JSON)
     }
     elasticSearchClient.indexAsync(indexRequest, ActionListener.wrap({
       logger.atInfo().log("Indexed %s", product)
     }, {
       logger.atWarning().withCause(it).log("Failed to index %s", product)
+    }))
+  }
+
+  override suspend fun syncProductWithDatabase() { // TODO: implement in worker verticle instead
+    val bulkRequest = BulkRequest()
+    data.select(ProductEntity::class).get().forEach {
+      val indexRequest = IndexRequest("product", "_doc", "" + it.id).source(Json.encode(it), XContentType.JSON)
+      bulkRequest.add(indexRequest)
+    }
+    elasticSearchClient.bulkAsync(bulkRequest, ActionListener.wrap ({}, {
+      logger.atWarning().withCause(it).log("Fail to index bulk request")
     }))
   }
 }
