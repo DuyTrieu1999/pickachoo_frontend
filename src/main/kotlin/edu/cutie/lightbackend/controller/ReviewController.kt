@@ -21,7 +21,7 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
 
   companion object {
     private val fields = arrayOf(PersonEntity.NAME, ReviewEntity.COMMENT, ReviewEntity.DIFFICULTY, ReviewEntity.SCORE,
-      ReviewEntity.PRIVATE_LEVEL, ReviewEntity.TAGS, ReviewEntity.CREATED_AT)
+      ReviewEntity.PRIVATE_LEVEL, ReviewEntity.TAGS, ReviewEntity.CREATED_AT, ReviewEntity.PRICE)
   }
 
   override suspend fun create(context: RoutingContext) {

@@ -15,6 +15,7 @@ interface Review: Persistable {
   var toProduct: Int
   var score: Int
   var difficulty: Int
+  var price: Int?
   var comment: String
   var privateLevel: Int
   @get:Convert(StringListConverter::class)
