@@ -19,7 +19,7 @@ import kotlin.reflect.full.staticProperties
 class ProductController(router: Router, private val searchService: SearchService) : Controller(router, "/product"), WithLogger {
   companion object {
     private val cloudinary = Cloudinary()
-    private val orders: Map<String, AttributeDelegate<ProductEntity, Any>?> = ProductEntity::class.staticProperties.associateBy({ it.name.toLowerCase() }, { it.get() as? AttributeDelegate<ProductEntity, Any> })
+    private val orders = ProductEntity::class.staticProperties.associateBy({ it.name.toLowerCase() }, { it.get() as? AttributeDelegate<ProductEntity, Any> })
     // TODO: hacky reflection. use code generation or just type it out instead
   }
 
