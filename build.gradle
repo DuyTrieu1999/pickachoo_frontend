@@ -65,6 +65,9 @@ dependencies {
 
   implementation "com.cloudinary:cloudinary-http44:1.19.0"
 
+  implementation "commons-validator:commons-validator:1.6"
+
+
   implementation "com.google.flogger:flogger:0.2"
   runtimeOnly "com.google.flogger:flogger-system-backend:0.2"
   implementation "org.slf4j:slf4j-jdk14:1.7.25"

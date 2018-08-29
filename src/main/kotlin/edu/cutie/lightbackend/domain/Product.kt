@@ -2,6 +2,7 @@ package edu.cutie.lightbackend.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import io.requery.*
+import org.apache.commons.validator.routines.UrlValidator
 import java.sql.Timestamp
 
 enum class ProductType {
@@ -42,5 +43,7 @@ interface Product: Persistable {
   var createdAt: Timestamp
 }
 
-fun ProductEntity.validate() = gradeFrom >= 3 && gradeTo <= 13
-  && department.length < 20 && (description?.length ?: 0) < 500
+private val urlValidator = UrlValidator()
+
+fun ProductEntity.validate() = gradeFrom >= 3 && gradeTo <= 13 && gradeFrom <= gradeTo
+  && department.length < 20 && (description?.length ?: 0) < 500 && urlValidator.isValid(links)
