@@ -32,7 +32,7 @@ import io.vertx.kotlin.coroutines.CoroutineVerticle
 import io.vertx.kotlin.ext.web.client.WebClientOptions
 
 
-val data: KotlinEntityDataStore<Persistable> by lazy {
+val data by lazy {
   val config = JsonObject()
     .put("jdbcUrl", "jdbc:hsqldb:mem:test?shutdown=true")
     .put("driverClassName", "org.hsqldb.jdbcDriver")
@@ -40,6 +40,7 @@ val data: KotlinEntityDataStore<Persistable> by lazy {
   val source = HikariCPDataSourceProvider().getDataSource(config)
   SchemaModifier(source, Models.DEFAULT).createTables(TableCreationMode.DROP_CREATE)
   KotlinEntityDataStore<Persistable>(KotlinConfiguration(Models.DEFAULT, source, useDefaultLogging = true))
+  //KotlinReactiveEntityStore<Persistable>(KotlinEntityDataStore(KotlinConfiguration(Models.DEFAULT, source, useDefaultLogging = true)))
 }
 
 private val logger = FluentLogger.forEnclosingClass()
@@ -96,7 +97,7 @@ class MainVerticle : CoroutineVerticle() {
 
     route().handler(BodyHandler.create())
     route().handler(StaticHandler.create())
-    route().handler(CorsHandler.create("http:\\/\\/localhost:\\[\\[0-9\\]+|https:\\/\\/qtmx\\.netlify\\.com|https:\\/\\/pickachoo\\.devel\\.faith|https:\\/\\/\\w+--qtmx\\.netlify\\.com")
+    route().handler(CorsHandler.create("http:\\/\\/localhost:\\[\\[0-9\\]+|https:\\/\\/qtmx\\.netlify\\.com|https:\\/\\/pickachoo\\.devel\\.faith|https:\\/\\/.*--qtmx\\.netlify\\.com")
       .allowCredentials(true).allowedHeader("Authorization")
     )
   }
