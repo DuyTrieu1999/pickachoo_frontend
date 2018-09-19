@@ -13,6 +13,9 @@ interface Review: Persistable {
   var fromUser: Int
   @get:Key @get:ForeignKey(references = Product::class)
   var toProduct: Int
+  @get:Convert(StringListConverter::class)
+  var coursesTaken: List<String>
+
   var score: Int
   var difficulty: Int
   var price: Int?

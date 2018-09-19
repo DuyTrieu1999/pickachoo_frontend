@@ -11,7 +11,6 @@ import edu.cutie.lightbackend.controller.SearchController
 import edu.cutie.lightbackend.domain.Models
 import edu.cutie.lightbackend.domain.PersonEntity
 import edu.cutie.lightbackend.domain.ProductEntity
-import edu.cutie.lightbackend.domain.ReviewEntity
 import edu.cutie.lightbackend.service.DefaultSearchService
 import edu.cutie.lightbackend.service.DefaultUserService
 import edu.cutie.lightbackend.service.UserService
@@ -97,9 +96,8 @@ class MainVerticle : CoroutineVerticle() {
 
     route().handler(BodyHandler.create())
     route().handler(StaticHandler.create())
-    route().handler(CorsHandler.create("http://localhost:8080|https://qtmx.netlify.com|http://localhost:8081")
+    route().handler(CorsHandler.create("http:\\/\\/localhost:[[0-9]+|https:\\/\\/qtmx\\.netlify\\.com|https:\\/\\/pickachoo\\.devel\\.faith|https:\\/\\/\\w+--qtmx\\.netlify\\.com")
       .allowCredentials(true)
-      .allowedHeader("Authorization")
     )
   }
 }
