@@ -97,7 +97,7 @@ class MainVerticle : CoroutineVerticle() {
     route().handler(BodyHandler.create())
     route().handler(StaticHandler.create())
     route().handler(CorsHandler.create("http:\\/\\/localhost:\\[\\[0-9\\]+|https:\\/\\/qtmx\\.netlify\\.com|https:\\/\\/pickachoo\\.devel\\.faith|https:\\/\\/\\w+--qtmx\\.netlify\\.com")
-      .allowCredentials(true)
+      .allowCredentials(true).allowedHeader("Authorization")
     )
   }
 }
