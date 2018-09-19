@@ -6,7 +6,7 @@ buildscript {
   }
 
   dependencies {
-    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.60"
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.2.70"
     classpath "com.github.jengelman.gradle.plugins:shadow:1.2.4"
     classpath "gradle.plugin.io.vertx:vertx-gradle-plugin:0.1.0"
   }
@@ -35,7 +35,7 @@ dependencies {
   // TODO use implementationOnly instead implementation for codegen
   implementation "io.vertx:vertx-core"
   implementation "io.vertx:vertx-web"
-  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.60"
+  implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.2.61"
   implementation ("io.vertx:vertx-lang-kotlin") {
     exclude group: "org.jetbrains.kotlin"
   }
