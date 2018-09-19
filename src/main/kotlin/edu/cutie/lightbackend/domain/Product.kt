@@ -9,6 +9,8 @@ enum class ProductType {
   PROFESSOR, CLASS, SCHOOL
 }
 
+private val urlValidator = UrlValidator()
+
 @Entity
 @JsonIgnoreProperties("score", "difficulty", "reviews", "createdAt", allowGetters = true)
 interface Product: Persistable {
@@ -43,7 +45,11 @@ interface Product: Persistable {
   var createdAt: Timestamp
 }
 
-private val urlValidator = UrlValidator()
-
-fun ProductEntity.validate() = gradeFrom >= 3 && gradeTo <= 13 && gradeFrom <= gradeTo
-  && department.length < 20 && (description?.length ?: 0) < 500 && urlValidator.isValid(links)
+fun ProductEntity.validate() {
+  require(gradeFrom >= 3)
+  require(gradeTo <= 13)
+  require(gradeFrom <= gradeTo)
+  require(department.length < 20)
+  require((description?.length ?: 0) < 500)
+  require(urlValidator.isValid(links))
+}

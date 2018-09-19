@@ -24,12 +24,7 @@ class ProductController(router: Router, private val searchService: SearchService
   }
 
   override suspend fun create(context: RoutingContext) { // TODO: add support for ReCaptcha
-    val p = context.bodyAsJson.mapTo(ProductEntity::class.java)
-    if (!p.validate()) {
-      context.response().endWithJson("Validation Failed", HttpResponseStatus.BAD_REQUEST)
-      logger.atWarning().log("Validation failed for product %s", p)
-      return
-    }
+    val p = context.bodyAsJson.mapTo(ProductEntity::class.java).also(ProductEntity::validate)
     val response = async {
       cloudinary.uploader().upload(p.picture, ObjectUtils.emptyMap())
     }
@@ -40,9 +35,9 @@ class ProductController(router: Router, private val searchService: SearchService
   }
 
   override fun listAll(context: RoutingContext, limit: Int, offset: Int) {
-    val order = context.queryParam("order").mapNotNull(String::toLowerCase).mapNotNull {
+    val order = context.queryParam("order").asSequence().mapNotNull(String::toLowerCase).mapNotNull {
       if (it.first() == '-') orders[it.substring(1)]?.desc() else orders[it]
-    }
+    }.toList()
     val p = data.select(ProductEntity::class).orderBy(*order.toTypedArray()).limit(limit).offset(offset).get().toList()
     context.response().endWithJson(p)
   }

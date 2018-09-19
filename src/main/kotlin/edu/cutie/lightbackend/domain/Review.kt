@@ -27,4 +27,9 @@ interface Review: Persistable {
   var createdAt: Timestamp
 }
 
-fun ReviewEntity.validate() = privateLevel in (0..1) && tags.size <= 3 && score in (0..100) && difficulty in (0..100)
+fun ReviewEntity.validate() {
+  require(privateLevel in (0..1))
+  require(tags.size <= 3)
+  require(score in (0..100))
+  require(difficulty in (0..100))
+}

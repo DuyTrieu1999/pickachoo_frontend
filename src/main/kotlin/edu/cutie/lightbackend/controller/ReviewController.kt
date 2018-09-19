@@ -9,7 +9,6 @@ import edu.cutie.lightbackend.helper.Controller
 import edu.cutie.lightbackend.helper.WithLogger
 import edu.cutie.lightbackend.helper.endWithJson
 import edu.cutie.lightbackend.helper.toMap
-import io.netty.handler.codec.http.HttpResponseStatus
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 
@@ -26,13 +25,8 @@ class ReviewController(router: Router, endpoint: String = "/review") : Controlle
 
   override suspend fun create(context: RoutingContext) {
     // val user = context.getUserDetail() TODO: Add auth logic
-    val review = context.bodyAsJson.mapTo(ReviewEntity::class.java).apply {
+    val review = context.bodyAsJson.mapTo(ReviewEntity::class.java).also(ReviewEntity::validate).apply {
       // fromUser = user.userId
-    }
-    if (!review.validate()){
-      context.response().endWithJson("Validation Failed", HttpResponseStatus.BAD_REQUEST)
-      logger.atWarning().log("Validation failed for review %s", review)
-      return
     }
     val p = data.withTransaction {
       insert(review)
